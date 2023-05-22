@@ -26,7 +26,7 @@ async function crawlPage(baseURL, currentURL, pages) {
 
         // Exit on error codes
         if (response.status > 399) {
-            console.error(`Error in fetch with status code ${response.status} on page ${currentURL}`);
+            console.log(`Error in fetch with status code ${response.status} on page ${currentURL}`);
             return pages;
         }
 
@@ -34,7 +34,7 @@ async function crawlPage(baseURL, currentURL, pages) {
 
         // Exit on non-html responses
         if (!contentType.includes("text/html")) {
-            console.error(`Non html response, content-type ${contentType} on page ${currentURL}`);
+            console.log(`Non html response, content-type ${contentType} on page ${currentURL}`);
             return pages;
         }
 
@@ -49,7 +49,7 @@ async function crawlPage(baseURL, currentURL, pages) {
         return pages;
 
     } catch (err) {
-        console.error(`Error in fetch: ${err.message}, on page: ${currentURL}`);
+        console.log(`Error in fetch: ${err.message}, on page: ${currentURL}`);
     }
 }
 
@@ -67,7 +67,7 @@ function getURLsfromHTML(htmlBody, baseURL) {
                 const urlObject = new URL(`${baseURL}${linkTag.href}`);
                 urls.push(`${urlObject.href}`)
             } catch (err) {
-                console.error(`Failed parsing url: ${err.message}`)
+                console.log(`Failed parsing url: ${err.message}`)
             }
         } else {
             // absolute url
@@ -75,7 +75,7 @@ function getURLsfromHTML(htmlBody, baseURL) {
                 const urlObject = new URL(`${linkTag.href}`);
                 urls.push(linkTag.href)
             } catch (err) {
-                console.error(`Failed parsing url: ${err.message}`)
+                console.log(`Failed parsing url: ${err.message}`)
             }
         }
     }

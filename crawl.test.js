@@ -1,98 +1,99 @@
 const { normalizeURL, getURLsfromHTML } = require('./crawl')
 const { test, expect } = require('@jest/globals')
 
-test('normalizeURL strip protocol', () => {
-    const input = 'https://digitalocean.com/blog';
+test('normalizeURL: strip https protocol', () => {
+    const input = 'https://testsite.com/blog';
     const actualOutput = normalizeURL(input);
-    const expectedOutput = 'digitalocean.com/blog';
+    const expectedOutput = 'testsite.com/blog';
+
+    expect(actualOutput).toEqual(expectedOutput);
+});
+
+test('normalizeURL: strip http protocol', () => {
+    const input = 'http://testsite.com/blog';
+    const actualOutput = normalizeURL(input);
+    const expectedOutput = 'testsite.com/blog';
+
+    expect(actualOutput).toEqual(expectedOutput);
+});
+
+test('normalizeURL: remove trailing slashes', () => {
+    const input = 'https://testsite.com/blog/';
+    const actualOutput = normalizeURL(input);
+    const expectedOutput = 'testsite.com/blog';
+
+    expect(actualOutput).toEqual(expectedOutput);
+});
+
+test('normalizeURL: lowercase capitals', () => {
+    const input = 'https://tEsTSIte.com/BLoG';
+    const actualOutput = normalizeURL(input);
+    const expectedOutput = 'testsite.com/blog';
 
     expect(actualOutput).toEqual(expectedOutput);
 });
 
 
-test('normalizeURL trailing slashes', () => {
-    const input = 'https://digitalocean.com/blog/';
-    const actualOutput = normalizeURL(input);
-    const expectedOutput = 'digitalocean.com/blog';
-
-    expect(actualOutput).toEqual(expectedOutput);
-});
-
-test('normalizeURL handle capitals', () => {
-    const input = 'https://DigitalOcean.com/BLoG';
-    const actualOutput = normalizeURL(input);
-    const expectedOutput = 'digitalocean.com/blog';
-
-    expect(actualOutput).toEqual(expectedOutput);
-});
-
-test('normalizeURL trim http protocol', () => {
-    const input = 'http://digitalocean.com/blog';
-    const actualOutput = normalizeURL(input);
-    const expectedOutput = 'digitalocean.com/blog';
-
-    expect(actualOutput).toEqual(expectedOutput);
-});
 
 //  getURLsFromHTML
 
-test('getURLsFromHTML absolute urls', () => {
+test('getURLsFromHTML: get absolute urls', () => {
     const inputHTML = `
     <html>
         <body>
-            <a href="https://digitalocean.com/blog"
-                DigitalOcean Blog
+            <a href="https://testsite.com/blog"
+                TestSite Blog
             </a>
         </body>
     <html>
     `
-    const inputBaseURL = 'https://digitalocean.com/blog'
+    const inputBaseURL = 'https://testsite.com/blog'
     const actualOutput = getURLsfromHTML(inputHTML, inputBaseURL);
-    const expectedOutput = ['https://digitalocean.com/blog'];
+    const expectedOutput = ['https://testsite.com/blog'];
 
     expect(actualOutput).toEqual(expectedOutput);
 });
 
 
-test('getURLsFromHTML relative urls', () => {
+test('getURLsFromHTML: get relative urls', () => {
     const inputHTML = `
     <html>
         <body>
             <a href="/blog/"
-                DigitalOcean Blog
+                TestSite Blog
             </a>
         </body>
     <html>
     `
-    const inputBaseURL = 'https://digitalocean.com'
+    const inputBaseURL = 'https://testsite.com'
     const actualOutput = getURLsfromHTML(inputHTML, inputBaseURL);
-    const expectedOutput = ['https://digitalocean.com/blog/'];
+    const expectedOutput = ['https://testsite.com/blog/'];
 
     expect(actualOutput).toEqual(expectedOutput);
 });
 
-test('getURLsFromHTML get multiple urls', () => {
+test('getURLsFromHTML: get multiple urls', () => {
     const inputHTML = `
     <html>
         <body>
             <a href="/blog/"
-                DigitalOcean Blog
+                TestSite Blog
             </a>
             <a href="/login/"
-                DigitalOcean Support
+                TestSite Support
             </a>
-            <a href="https://digitalocean.com/support/"
-                DigitalOcean Support
+            <a href="https://testsite.com/support/"
+                TestSite Support
             </a>
         </body>
     <html>
     `
-    const inputBaseURL = 'https://digitalocean.com'
+    const inputBaseURL = 'https://testsite.com'
     const actualOutput = getURLsfromHTML(inputHTML, inputBaseURL);
     const expectedOutput = [
-        'https://digitalocean.com/blog/',
-        'https://digitalocean.com/login/',
-        'https://digitalocean.com/support/'
+        'https://testsite.com/blog/',
+        'https://testsite.com/login/',
+        'https://testsite.com/support/'
     ];
 
     expect(actualOutput).toEqual(expectedOutput);
@@ -108,7 +109,7 @@ test('getURLsFromHTML invalid URL', () => {
         </body>
     <html>
     `
-    const inputBaseURL = 'https://digitalocean.com'
+    const inputBaseURL = 'https://testsite.com'
     const actualOutput = getURLsfromHTML(inputHTML, inputBaseURL);
     const expectedOutput = [];
 
