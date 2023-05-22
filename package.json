@@ -1,0 +1,23 @@
+{
+  "name": "webcrawler-demo",
+  "version": "1.0.0",
+  "description": "webcrawler made for learning purposes",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FacundoNG/webcrawler-demo.git"
+  },
+  "author": "nicogz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FacundoNG/webcrawler-demo/issues"
+  },
+  "homepage": "https://github.com/FacundoNG/webcrawler-demo#readme",
+  "devDependencies": {
+    "jest": "^29.5.0"
+  }
+}
